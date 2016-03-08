@@ -1,0 +1,40 @@
+{
+  "name": "express-content-router",
+  "version": "1.0.0",
+  "description": "Generate express router from js files in a directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/havasnewyork/express-content-router"
+  },
+  "keywords": [
+    "express",
+    "router",
+    "content",
+    "file-system"
+  ],
+  "author": "Kevin Haggerty <kevin@splatcollision.com> (http://splatcollision.com/)",
+  "contributors": [
+    {
+      "name": "Vishwas Chouhan",
+      "email": "vishwas.chouhan@havasww.com",
+      "url": "https://github.com/vchouhan"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/havasnewyork/express-content-router/issues"
+  },
+  "homepage": "https://github.com/havasnewyork/express-content-router",
+  "dependencies": {
+    "express": "^4.13.4",
+    "require-dir": "^0.3.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  }
+}
