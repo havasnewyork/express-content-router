@@ -27,6 +27,26 @@ Your directory structure would be the following:
 
 Any level of nesting can be used.
 
+**One important caveat** - Don't name a file the same thing as a directory at the same level - the directory's content will overwrite the file. This is due to the default behavior of the [require-dir](https://www.npmjs.com/package/require-dir#options) module with respect to recursion.
+
+If you do want to have similarly named URLs generated from a filename and directory (both /about.html and /about/detail.html for example), prefix the filename with "@" to avoid the conflict. The library will compensate and generate the expected URL paths.
+
+If you want to have individual blocks of content that are shared between pages (common header/footer, contact, etc), you can put that directly in an underscore-prefixed file at any level, and require it in your main page content object. The underscored files will be ignored by the router, but will be required into each page automatically.
+    
+    ... directory setup
+
+    /content/_footer-links.js
+    /content/page.js
+
+    ... and in page.js
+
+    module.exports = {
+        ...
+        content: {
+            footerLinks: require('./_footer-links')
+        }
+    }
+
 ## Page Object Spec
 
 An object that defines a page should resemble the following:
@@ -47,13 +67,6 @@ An object that defines a page should resemble the following:
 
 ## Roadmap / TODOs
 
-* Support underscore prefixed content files as 'ignored' by the page logic, so they are able to be required individually in a page content object
-
-    bands: [
-        require("../_fragA")
-        require("../_fragD")
-        require("../../../_fragC")
-    ]
 
 * Support more features and auto-generated content for building page navigation structures.
 
@@ -66,6 +79,4 @@ An object that defines a page should resemble the following:
 * Support passing in optional global properties for view rendering
 
 * Option flag to auto-generate navigation object data
-
-* Document filename / directory collisions - require-dir will use directories over files by default. Perhaps a naming convention?
 

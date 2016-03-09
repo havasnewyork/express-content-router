@@ -31,9 +31,14 @@ var addroute = function(path, data) {
 var addRoutes = function(contentObj, navData, parentDir) {
     // console.log('content element:', contentObj);
     _.each(contentObj, function(pageData, pathFragment) {
-        // console.log('page content for:', pathFragment);
+        
         // only test we need is if the content object exists
-        if (pageData.content) {
+        // and is not an underscore-prefixed fragment object...
+        if (/^_/.test(pathFragment)) return;
+        // console.log('page content for:', pathFragment);
+        if (pageData.content) { // 
+            // pathFragment replace @ prefix if present, to avoid file VS directory conflicts
+            pathFragment = pathFragment.replace(/^@/, '');
             var path = basePath + (parentDir ? parentDir : "") + pathFragment + '.html';
             navData[pathFragment] = addroute(path, pageData);
         } else {

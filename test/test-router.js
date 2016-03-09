@@ -67,14 +67,19 @@ describe('Test 2: test if the routesFunc returns a router', function(){
 			// var pageContent = contentPath.reduce(fn, )
 			request(app)
 				.get(val.route.path)
-				// .expect(function(res){
-				// 	console.log(res.text);
-				// 	// res.text.indexOf('<p>''</p>')
-				// })
+				.expect(function(res){
+					console.log(res.text);
+					// res.text.indexOf('<p>''</p>')
+				})
 				.expect(200)
 				.end();
 		});
 		done();
 	});
+
+
+	// TODO tests for @ and _ prefixed functions
+
+	// TODO tests for navigation object rendering
 
 });

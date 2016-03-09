@@ -17,4 +17,5 @@ block content
           
   h1= content.title
   p= content.content
-  
+  if content.detail
+    pre=JSON.stringify(content.detail)
