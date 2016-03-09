@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  if content.sitemap
+    ul
+      for link in content.sitemap
+        //- pre=JSON.stringify(link)
+        li
+          a(href=link.url)= link.url
+        //- if (link.links)
+          +indexLinks(link.links)
