@@ -45,7 +45,7 @@ An object that defines a page should resemble the following:
     }
 
 
-## Roadmap
+## Roadmap / TODOs
 
 * Support underscore prefixed content files as 'ignored' by the page logic, so they are able to be required individually in a page content object
 
@@ -62,3 +62,10 @@ An object that defines a page should resemble the following:
 * Global configuration scheme for common site things across all pages. Meta tags, Titles, navigation
 
 * Support storing content in a database of some kind instead of the file system.
+
+* Support passing in optional global properties for view rendering
+
+* Option flag to auto-generate navigation object data
+
+* Document filename / directory collisions - require-dir will use directories over files by default. Perhaps a naming convention?
+

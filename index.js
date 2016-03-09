@@ -5,50 +5,57 @@ var router = require('express').Router(),
 var basePath = "/",
     allPaths = [];
 
-// TODO - build up a 'page navigation' object from the page data, suitable for rendering
+// build up a 'page navigation' object from the page data, suitable for rendering
 var navigationData = {};
+var routerOptions;
 
 var handler = function(req, res) {
     // Issue with this object is defined as the content object
     // instead of the the binding elems from the addRoutes function
     // console.log('handing a page request:', allPaths);
     res.render(this.view, {
-        content: this.content
+        content: this.content,
+        navigation: navigationData
     });
 };
 
-var addroute = function(path, hdlr) {
-  allPaths.push({url: path.replace(/^\//, '')}); // relative links for sitemap
-  // console.log("ADDROUTE:", path);
-  router.get(path, hdlr);
+var addroute = function(path, data) {
+    
+    allPaths.push({url: path.replace(/^\//, '')}); // relative links for sitemap
+    // console.log("ADDROUTE:", path);
+    router.get(path, handler.bind(data));
+
+    return {url: data.optional_path || path, label: data.title}; // return our nav fragment
 }
 
-var addRoutes = function(contentObj, parentDir) {
+var addRoutes = function(contentObj, navData, parentDir) {
     // console.log('content element:', contentObj);
     _.each(contentObj, function(pageData, pathFragment) {
-        // console.log('page content:',pageData, pathFragment);
+        // console.log('page content for:', pathFragment);
         // only test we need is if the content object exists
         if (pageData.content) {
-            var dirflPath = basePath + (parentDir ? parentDir : "") + pathFragment + '.html';
-            addroute(dirflPath, handler.bind(pageData));    
+            var path = basePath + (parentDir ? parentDir : "") + pathFragment + '.html';
+            navData[pathFragment] = addroute(path, pageData);
         } else {
             // console.log('adding sub routes:', pathFragment, pageData);
-            addRoutes(pageData, pathFragment + "/");
+            navData[pathFragment] = navData[pathFragment] || {};
+            // could check for a secondary key or path in pageData.isIndexPage - render as path/
+            addRoutes(pageData, navData[pathFragment], pathFragment + "/");
         }
     });
-    // console.log(allPaths);
-    
-    return router; // plz return it
+
+    return router;
 };
 
 module.exports = function(contentDir, options){
-    options = options || {};
+    routerOptions = options || {};
     var content = require('require-dir')(contentDir, {recurse: true});
 
-    // console.log('raw content:', content);
-    var ourRouter = addRoutes(content);
-    if (options.sitemap) {
-        ourRouter.get("/sitemap", handler.bind({view: options.sitemap, content: {sitemap: allPaths}}));    
+    // console.log('nav data start:', navigationData);
+    var ourRouter = addRoutes(content, navigationData);
+    console.log('nav data check', navigationData);
+    if (routerOptions.sitemap) {
+        ourRouter.get("/sitemap", handler.bind({view: routerOptions.sitemap, content: {sitemap: allPaths}}));    
     }
     return ourRouter;
 }

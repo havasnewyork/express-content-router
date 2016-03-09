@@ -8,6 +8,7 @@ var express = require('express')
 	dirPath = __dirname + "/../example-content",
 	contentObj = require('require-dir')(dirPath, {recurse: true});
 
+	
 var path          = require('path');
 
 var app = express();
@@ -67,8 +68,8 @@ describe('Test 2: test if the routesFunc returns a router', function(){
 			request(app)
 				.get(val.route.path)
 				// .expect(function(res){
-					// console.log(res.text);
-					// res.text.indexOf('<p>''</p>')
+				// 	console.log(res.text);
+				// 	// res.text.indexOf('<p>''</p>')
 				// })
 				.expect(200)
 				.end();
