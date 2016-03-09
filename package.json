@@ -4,6 +4,7 @@
   "description": "Generate express router from js files in a directory",
   "main": "index.js",
   "scripts": {
+    "watch": "gulp watch",
     "test": "mocha"
   },
   "repository": {
