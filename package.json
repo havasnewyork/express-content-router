@@ -48,6 +48,7 @@
     "run-sequence": "^1.1.5",
     "should": "^8.2.2",
     "should-http": "0.0.4",
-    "supertest": "^1.2.0"
+    "supertest": "^1.2.0",
+    "zombie": "^2.5.1"
   }
 }

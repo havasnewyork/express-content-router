@@ -1,5 +1,8 @@
+'use strict'
+process.env.NODE_ENV = 'test';
 var express = require('express'),
     router = express.Router(),
+    http = require('http'),
     request = require('supertest'),
     routerFunc = require('../index'),
     _ = require('underscore'),
@@ -8,8 +11,11 @@ var express = require('express'),
     dirPath = __dirname + "/../example-content",
     contentObj = require('require-dir')(dirPath, { recurse: true });
 
+var Browser = require('zombie');
+
 var path = require('path');
 var app = express();
+var port = process.env.port || 3000;
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -20,7 +26,7 @@ var routes = routerFunc(dirPath, { sitemap: "sitemap" }),
 app.use('/', routes);
 
 // Test content directory exist and returns an object
-describe('Test 1: Test if the content directory exist and returns an object', function () {
+describe('Test 1: s', function () {
     it('Test 1.1: should be an Object type with properties', function (done) {
         _.each(contentObj, function(Obj, key){
         	Obj.should.be.an.instanceOf(Object);
@@ -55,26 +61,46 @@ describe('Test 2: test if the routesFunc returns a router', function () {
 
     it('Test 2.4: and paths render status 200', function (done) {
         // console.log("routes.stack:",routes.stack);
-        _.each(routes.stack, function (val, key) {
+        _.each(routes.stack, function (pathObj, path) {
             // var app = require('../app');
             // console.log( 'test:', key, val.route.path );
             // console.log(contentObj);
             // var contentPath = val.route.path.split('/');
             // var pageContent = contentPath.reduce(fn, )
             request(app)
-                .get(val.route.path)
-                // .expect(function (err, res) {
-                //     // console.log( res.text );
-                //     // res.text.indexOf('<p>''</p>')
-                // })
+                .get(pathObj.route.path)
+                .expect(function (err, res) {
+                    // console.log( res.text );
+                    // res.text.indexOf('<p>''</p>')
+                })
                 .expect(200)
                 .end();
         });
         done();
     });
+});
 
-    // TODO tests for @ and _ prefixed functions
+// TODO tests for @ and _ prefixed functions
 
-    // TODO tests for navigation object rendering
+// TODO tests for navigation object rendering
+describe('Test 3: Test each page renders and has title', function() {
+	var browser = this.browser;
+	var server = this.server;
 
+	it('Test 3.1: test all pages for specific content', function(done) {
+		server = http.createServer(app).listen(3000);
+		_.each(routes.stack, function(pathObj, path){
+			browser = new Browser({site:'http://localhost:3000', debug:true});
+			browser.visit(pathObj.route.path, function(done){
+				(browser.success).should.not.be.true();
+				// should.equal(browser.text('title'), '');
+			});
+			console.log("browser.success:", browser.success);
+		});
+		done();
+	});
+
+    after(function(done) {
+      server.close(done);
+    });
 });
