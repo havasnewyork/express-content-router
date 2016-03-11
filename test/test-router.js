@@ -1,4 +1,3 @@
-'use strict'
 process.env.NODE_ENV = 'test';
 var express = require('express'),
     router = express.Router(),
@@ -28,9 +27,9 @@ app.use('/', routes);
 // Test content directory exist and returns an object
 describe('Test 1: s', function () {
     it('Test 1.1: should be an Object type with properties', function (done) {
-        _.each(contentObj, function(Obj, key){
-        	Obj.should.be.an.instanceOf(Object);
-        	contentObj.should.have.property(key);
+        _.each(contentObj, function (Obj, key) {
+            Obj.should.be.an.instanceOf(Object);
+            contentObj.should.have.property(key);
         });
         done();
     });
@@ -83,24 +82,43 @@ describe('Test 2: test if the routesFunc returns a router', function () {
 // TODO tests for @ and _ prefixed functions
 
 // TODO tests for navigation object rendering
-describe('Test 3: Test each page renders and has title', function() {
-	var browser = this.browser;
-	var server = this.server;
+describe('Test 3: Test each page renders and has title', function () {
+    console.log("describe callback called:");
 
-	it('Test 3.1: test all pages for specific content', function(done) {
-		server = http.createServer(app).listen(3000);
-		_.each(routes.stack, function(pathObj, path){
-			browser = new Browser({site:'http://localhost:3000', debug:true});
-			browser.visit(pathObj.route.path, function(done){
-				(browser.success).should.not.be.true();
-				// should.equal(browser.text('title'), '');
-			});
-			console.log("browser.success:", browser.success);
-		});
-		done();
-	});
+    var browser = this.browser;
+    var server = this.server;
 
-    after(function(done) {
-      server.close(done);
+    // beforeEach(function(done) {
+    // 	console.log("before called:");
+    // });
+
+    it('Test 3.1: test all pages for specific content', function (done) {
+      	// console.log("it called:");
+      server = http.createServer(app).listen(3000);
+        _.each(routes.stack, function (pathObj, path) {
+        	console.log("Each called:");
+        	return (function(pObj, path){
+	        		console.log("Annon called:");
+	        		browser = new Browser({ site: 'http://localhost:3000'});
+	            	browser
+	            	    .visit(pObj.route.path, function () {
+	                	    console.log("path inside: ", path);
+	                    	// (browser.success).should.be.ok();
+	                    	assert.ok(browser.success);
+	                    	assert.equal(browser.text('title'), 'TEST');
+	                    	// should.equal(browser.text('title'), 'TEST'); //Pass Test
+	                    	// should.equal(browser.text('title'), 'NA'); //Fail Test
+	                   		console.log("vist callback:");
+	                   		done(); // With this done it fires the test Pass and  Fail test
+	            	});
+        	})(pathObj, path);
+        	// done(); // With this done the test complains of done() firing to many times
+        });
+        // done(); // This done passes the test without fail or Pass check - not working
     });
+
+    // afterEach(function (done) {
+    // 	console.log("after called:");
+    //     server.close(done);
+    // });
 });
