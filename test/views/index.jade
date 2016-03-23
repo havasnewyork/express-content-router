@@ -16,6 +16,6 @@ block content
       +nav(navigation)        
           
   h1= content.title
-  p= content.content
+  //- p.content= content.content
   if content.detail
     pre=JSON.stringify(content.detail)
