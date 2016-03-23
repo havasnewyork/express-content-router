@@ -8,7 +8,7 @@ var gulp = require( 'gulp' ),
 // Gulp Task for JS
 
 // Gulp Task to run tests
-gulp.task( 'cogtest', function ( ) {
+gulp.task( 'tester', function ( ) {
     return gulp
         .src( [ __dirname + '/test/test-*.js' ], { read: false } )
         .pipe( plugins.mocha( { reporter: 'spec' } ) )
@@ -18,7 +18,7 @@ gulp.task( 'cogtest', function ( ) {
 
 // gulp watch
 gulp.task( 'watch', function ( ) {
-    gulp.watch( [ '**/*.js', '!node_modules/**/*.js' ], [ 'cogtest' ] );
+    gulp.watch( [ '**/*.js', '!node_modules/**/*.js' ], [ 'tester' ] );
 } );
 
 // RUN Tasks in Sequence for builds process
