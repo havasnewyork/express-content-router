@@ -35,17 +35,20 @@ var addRoutes = function (contentObj, navData, parentDir) {
         // only test we need is if the content object exists
         // and is not an underscore-prefixed fragment object...
         if (/^_/.test(pathFragment)) return;
+
+        pathFragment = pathFragment.replace(/^@/, '');
+        pDir = parentDir ? parentDir : "";
         // console.log('page content for:', pathFragment);
         if (pageData.content) { //
             // pathFragment replace @ prefix if present, to avoid file VS directory conflicts
             pathFragment = pathFragment.replace(/^@/, '');
-            var path = basePath + (parentDir ? parentDir : "") + pathFragment + '.html';
+            var path = basePath + pdir + pathFragment + '.html';
             navData[pathFragment] = addroute(path, pageData);
         } else {
             // console.log('adding sub routes:', pathFragment, pageData);
             navData[pathFragment] = navData[pathFragment] || {};
             // could check for a secondary key or path in pageData.isIndexPage - render as path/
-            addRoutes(pageData, navData[pathFragment], pathFragment + "/");
+            addRoutes(pageData, navData[pathFragment], pDir + pathFragment + "/");
         }
     });
 
