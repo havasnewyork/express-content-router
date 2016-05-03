@@ -1,6 +1,6 @@
 {
   "name": "express-content-router",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate express router from js files in a directory",
   "main": "index.js",
   "scripts": {
