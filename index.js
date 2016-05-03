@@ -20,7 +20,6 @@ var handler = function (req, res) {
 };
 
 var addroute = function (path, data) {
-
     allPaths.push({ url: path.replace(/^\//, '') }); // relative links for sitemap
     // console.log("ADDROUTE:", path);
     router.get(path, handler.bind(data));
