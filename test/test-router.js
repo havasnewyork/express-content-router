@@ -77,6 +77,10 @@ describe('Test 2: test if the routesFunc returns a router', function () {
             .expect(200)
             .expect(/Text for Gov Two page/)
             .end();
+        request(app).get('/government/government-sub/index.html')
+            .expect(200)
+            .expect(/Text for Gov sub page/)
+            .end();
     });
 
 });

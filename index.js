@@ -41,7 +41,7 @@ var addRoutes = function (contentObj, navData, parentDir) {
         if (pageData.content) { //
             // pathFragment replace @ prefix if present, to avoid file VS directory conflicts
             pathFragment = pathFragment.replace(/^@/, '');
-            var path = basePath + pdir + pathFragment + '.html';
+            var path = basePath + pDir + pathFragment + '.html';
             navData[pathFragment] = addroute(path, pageData);
         } else {
             // console.log('adding sub routes:', pathFragment, pageData);
